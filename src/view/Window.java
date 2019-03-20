@@ -15,16 +15,23 @@ public class Window extends JFrame {
     private IController controller;
 
     private MenuBar menuBar;
+    private Panel panel;
 
     public Window(IController controller) {
         this.controller = controller;
 
-        this.menuBar = new MenuBar(this.controller);
-
         super.setLocation(Window.START_X, Window.START_Y);
         super.setSize(Window.WIDTH, Window.HEIGHT);
         super.setTitle(Window.TITLE);
+//        super.getContentPane().setLayout(null);
+
+        this.menuBar = new MenuBar(this.controller);
+        this.panel = new Panel(this.controller, super.getWidth() - 100, super.getHeight() - 100);
+
         super.setJMenuBar(this.menuBar);
+
+        super.add(this.panel);
+        this.panel.setLocation(50, 50);
 
         super.setVisible(true);
     }
