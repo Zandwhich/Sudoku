@@ -23,10 +23,11 @@ public class Window extends JFrame {
         super.setLocation(Window.START_X, Window.START_Y);
         super.setSize(Window.WIDTH, Window.HEIGHT);
         super.setTitle(Window.TITLE);
+        super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //        super.getContentPane().setLayout(null);
 
         this.menuBar = new MenuBar(this.controller);
-        this.panel = new Panel(this.controller, super.getWidth() - 100, super.getHeight() - 100);
+        this.panel = new Panel(this.controller, super.getBackground());
 
         super.setJMenuBar(this.menuBar);
 

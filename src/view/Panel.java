@@ -9,11 +9,12 @@ public class Panel extends JPanel {
 
     private IController controller;
 
-    public Panel(IController controller, int width, int height) {
+    public Panel(IController controller, Color frameColor) {
         this.controller = controller;
 
-        super.setPreferredSize(new Dimension(width, height));
-        super.setBackground(Color.RED);
+        super.setBorder(BorderFactory.createLineBorder(frameColor, 50));
+        super.setBorder(BorderFactory.createLoweredBevelBorder());
+        super.setBackground(Color.WHITE);
     }
 
 }
