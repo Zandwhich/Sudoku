@@ -3,6 +3,8 @@ package model.cells;
 import errors.ComputerResetsCellException;
 import errors.NumOutOfCellRangeException;
 
+import java.awt.Point;
+
 public class Cell {
     
     private int max;
@@ -10,17 +12,24 @@ public class Cell {
     private boolean isComputer;
     private boolean[] notes;
 
-    public Cell(int max, int num, boolean isComputer) {
+    /**
+     * Overall position in the whole board
+     */
+    private Point position;
+
+    public Cell(int max, int num, boolean isComputer, Point position) {
         this.max = max;
         this.num = num;
         this.isComputer = isComputer;
         this.notes = new boolean[this.max];
+        this.position = position;
     }
     
-    public Cell(int max, boolean isComputer) {
+    public Cell(int max, boolean isComputer, Point position) {
         this.max = max;
         this.isComputer = isComputer;
         this.notes = new boolean[this.max];
+        this.position = position;
     }
 
     public int getMax() {
@@ -35,6 +44,18 @@ public class Cell {
         return this.num;
     }
 
+    public Point getPosition() {
+        return this.position;
+    }
+
+    public int getX() {
+        return this.position.x;
+    }
+
+    public int getY() {
+        return this.position.y;
+    }
+
     /**
      * Sets the num of the cell to the num passed in.
      * @param num The new num of the cell
@@ -46,7 +67,7 @@ public class Cell {
     public boolean setNum(int num) throws ComputerResetsCellException, NumOutOfCellRangeException {
         // Throw the appropriate exceptions
         if (this.isComputer && this.isFilled()) throw new ComputerResetsCellException(this.num, num);
-        if (num > this.max || num < 1) throw new NumOutOfCellRangeException(this.max, num);
+        if (num > this.max || num < 1) throw new NumOutOfCellRangeException(this.max, num, this.position);
 
         // Temporarily remember old number for check if changed
         int oldNum = this.num;
@@ -80,7 +101,7 @@ public class Cell {
      * than 1
      */
     public boolean getNote(int num) throws NumOutOfCellRangeException {
-        if (num > this.max || num < 1) throw new NumOutOfCellRangeException(this.max, num);
+        if (num > this.max || num < 1) throw new NumOutOfCellRangeException(this.max, num, this.position);
         return this.notes[num-1];
     }
 
@@ -92,7 +113,7 @@ public class Cell {
      * @throws NumOutOfCellRangeException If the note is larger than the max size of the nums, or smaller than 1
      */
     public boolean addNote(int num) throws NumOutOfCellRangeException {
-        if (num > this.max || num < 1) throw new NumOutOfCellRangeException(this.max, num);
+        if (num > this.max || num < 1) throw new NumOutOfCellRangeException(this.max, num, this.position);
         if (!this.notes[num-1]) {
             this.notes[num-1] = true;
             return true;
@@ -109,7 +130,7 @@ public class Cell {
      * than 1
      */
     public boolean eraseNote(int num) throws NumOutOfCellRangeException {
-        if (num > this.max || num < 1) throw new NumOutOfCellRangeException(this.max, num);
+        if (num > this.max || num < 1) throw new NumOutOfCellRangeException(this.max, num, this.position);
         if (this.notes[num-1]) {
             this.notes[num-1] = false;
             return true;
@@ -125,7 +146,7 @@ public class Cell {
      * than 1
      */
     public boolean changeNote(int num) throws NumOutOfCellRangeException {
-        if (num > this.max || num < 1) throw new NumOutOfCellRangeException(this.max, num);
+        if (num > this.max || num < 1) throw new NumOutOfCellRangeException(this.max, num, this.position);
         this.notes[num-1] = !this.notes[num-1];
         return true;
     }
@@ -138,5 +159,9 @@ public class Cell {
             else if (this.notes[i]) temp = i;
         }
         return temp+1;
+    }
+
+    public boolean hasOneNote() {
+        return this.getOnlyNote() != -1;
     }
 }

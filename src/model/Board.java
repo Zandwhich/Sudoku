@@ -1,8 +1,13 @@
 package model;
 
+import errors.CellOutOfBoundsException;
+import errors.ComputerResetsCellException;
+import errors.NumOutOfCellRangeException;
 import model.cells.Cell;
 import model.cells.Grid;
 import model.cells.Line;
+
+import java.awt.Point;
 
 public class Board {
 
@@ -30,9 +35,9 @@ public class Board {
 
         // Create all of the cells in a size^2 x size^2 grid
         this.cells = new Cell[this.size * this.size][this.size * this.size];
-        for (Cell[] row : this.cells) {
-            for (Cell cell : row) {
-                cell = new Cell(this.size * this.size, isComputer);
+        for (int x = 0; x < this.cells.length; x++) {
+            for (int y = 0; y < this.cells[0].length; y++) {
+                cells[y][x] = new Cell(this.size * this.size, isComputer, new Point(x, y));
             }
         }
 
@@ -69,18 +74,44 @@ public class Board {
         }
     }
 
-    private Line getParentRow(int y) {
-        return this.rows[y];
+    public Line[] getRows() {
+        return this.rows;
     }
 
-    private Line getParentColumn(int x) {
-        return this.columns[x];
+    public Line[] getColumns() {
+        return this.columns;
     }
 
-    private Grid getParentGrid(int x, int y) {
-        x /= 3;
-        y /= 3;
-        return this.grids[x][y];
+    public Grid[][] getGrids() {
+        return this.grids;
+    }
+
+    public Cell[][] getCells() {
+        return this.cells;
+    }
+
+    public Line getRow(Point position) {
+        return this.rows[position.y];
+    }
+
+    public Line getParentRow(Cell cell) {
+        return this.getRow(cell.getPosition());
+    }
+
+    public Line getColumn(Point position) {
+        return this.columns[position.x];
+    }
+
+    public Line getParentColumn(Cell cell) {
+        return this.getColumn(cell.getPosition());
+    }
+
+    public Grid getGrid(Point position) {
+        return this.grids[position.y/this.size][position.x/this.size];
+    }
+
+    public Grid getParentGrid(Cell cell) {
+        return this.getGrid(cell.getPosition());
     }
 
     public int getSize() {
@@ -89,5 +120,28 @@ public class Board {
 
     public boolean isComputer() {
         return isComputer;
+    }
+
+    public void setCellNum(Cell cell, int num) throws NumOutOfCellRangeException, ComputerResetsCellException,
+            CellOutOfBoundsException {
+        cell.setNum(num);
+        this.getParentRow(cell).eraseNote(num);
+        this.getParentColumn(cell).eraseNote(num);
+        this.getParentGrid(cell).eraseNote(num);
+    }
+
+    public void setCellNum(int x, int y, int num) throws NumOutOfCellRangeException, ComputerResetsCellException,
+            CellOutOfBoundsException {
+        this.setCellNum(this.cells[y][x], num);
+    }
+
+    public void print() {
+        for (Cell[] cells : this.cells) {
+            for (Cell cell : cells) {
+                if (cell.getNum() != -1) System.out.print("[" + cell.getNum() + "]");
+                else System.out.print("[ ]");
+            }
+            System.out.println();
+        }
     }
 }

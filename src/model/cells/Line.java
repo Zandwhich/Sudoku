@@ -13,9 +13,6 @@ public class Line extends CellCollection {
     public Line(@NotNull Cell[] line, boolean isComputer) {
         super(line.length, line.length, Line.initialNumUnfinished(line), isComputer);
         this.line = line;
-        for (Cell cell : this.line) {
-            if (cell == null) cell = new Cell(line.length, isComputer);
-        }
     }
 
     private static int initialNumUnfinished(@NotNull Cell[] line) {
@@ -115,5 +112,32 @@ public class Line extends CellCollection {
         } catch (Exception e) {
             throw e;
         }
+    }
+
+    @Override
+    public boolean hasNum(int num) throws NumOutOfCellRangeException {
+        // This line is just to throw the exception
+        this.line[0].getNote(num);
+
+        for (Cell cell: this.line) {
+            if (cell.isFilled() && cell.getNum() == num) return true;
+        }
+        return false;
+    }
+
+    public Cell[] getCells() {
+        return this.line;
+    }
+
+    @Override
+    public Cell hasOnlyOneNote(int num) throws NumOutOfCellRangeException {
+        if (this.hasNum(num)) return null;
+
+        Cell temp = null;
+        for (Cell cell : line) {
+            if (cell.getNote(num) && temp == null) temp = cell;
+            else if (cell.getNote(num) && temp != null) return null;
+        }
+        return temp;
     }
 }

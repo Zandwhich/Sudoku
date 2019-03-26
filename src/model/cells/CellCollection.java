@@ -52,4 +52,8 @@ public abstract class CellCollection {
     }
 
     public abstract boolean eraseNote(int num) throws NumOutOfCellRangeException, CellOutOfBoundsException;
+
+    public abstract boolean hasNum(int num) throws NumOutOfCellRangeException;
+
+    public abstract Cell hasOnlyOneNote(int num) throws NumOutOfCellRangeException;
 }

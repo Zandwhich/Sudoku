@@ -12,12 +12,6 @@ public class Grid extends CellCollection {
     public Grid(@NotNull Cell[][] grid, boolean isComputer) {
         super(grid.length * grid.length, grid.length, Grid.initialNumUnFinished(grid), isComputer);
         this.grid = grid;
-
-        for (Cell[] row : this.grid) {
-            for (Cell cell : row) {
-                if (cell == null) cell = new Cell(super.getTotalCells(), isComputer);
-            }
-        }
     }
 
     private static int initialNumUnFinished(Cell[][] grid) {
@@ -126,5 +120,36 @@ public class Grid extends CellCollection {
         } catch (Exception e) {
             throw e;
         }
+    }
+
+    @Override
+    public boolean hasNum(int num) throws NumOutOfCellRangeException {
+        // This line is just to throw the exception
+        this.grid[0][0].getNote(num);
+
+        for (Cell[] cells : this.grid) {
+            for (Cell cell : cells) {
+                if (cell.isFilled() && cell.getNum() == num) return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public Cell hasOnlyOneNote(int num) throws NumOutOfCellRangeException {
+        // This line is just to throw the exception
+        this.grid[0][0].getNote(num);
+
+        if (this.hasNum(num)) return null;
+
+        Cell temp = null;
+        for (Cell[] cells : this.grid) {
+            for (Cell cell : cells) {
+                if (cell.getNote(num) && temp == null) temp = cell;
+                else if (cell.getNote(num) && temp != null) return null;
+            }
+        }
+        return temp;
     }
 }
