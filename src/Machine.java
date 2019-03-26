@@ -104,6 +104,8 @@ public class Machine {
         try {
 
             this.setupNotes();
+            this.board.printNotes();
+            System.out.println();
 
             boolean temp = true;
             while (temp) {

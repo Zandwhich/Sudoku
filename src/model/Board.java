@@ -144,4 +144,30 @@ public class Board {
             System.out.println();
         }
     }
+
+
+    public void printNotes() {
+        try {
+            int counter = 0;
+            for (Cell[] cells : this.cells) {
+                System.out.println("|---------+---------+---------|---------+---------+---------|---------+---------+---------|");
+                for (int i = 0; i < this.size; i++) {
+                    for (Cell cell : cells) {
+                        System.out.print("|");
+                        for (int j = this.size*i+1; j < i*this.size+this.size+1; j++) {
+                            if (cell.isFilled() && j == this.size*2-1) System.out.print(" " + cell.getNum() + " ");
+                            else if (cell.isFilled()) System.out.print(" X ");
+                            else if (cell.getNote(j)) System.out.print(" " + j + " ");
+                            else System.out.print("   ");
+                        }
+                    }
+                    System.out.println("|");
+                }
+                if ((counter+1)%this.size == 0) System.out.println("|---------+---------+---------|---------+---------+---------|---------+---------+---------|");
+                counter++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
