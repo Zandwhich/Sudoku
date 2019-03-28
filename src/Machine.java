@@ -29,9 +29,14 @@ public class Machine {
          */
         for (int num = 1; num <= Math.pow(this.controller.getSize(), 2); num++) {
             for (Line row : board.getRows()) {
-                if (row.hasNum(num)) {
+                System.out.println();
+                System.out.println("About to do hasNum");
+                System.out.print("Num:\t" + num + "\nRow: ");
+                row.print();
+                if (!row.hasNum(num)) {
                     for (Cell cell : row.getCells()) {
-                        if (!cell.isFilled() && !board.getParentColumn(cell).hasNum(num)) cell.addNote(num);
+                        if (!cell.isFilled() && !board.getParentColumn(cell).hasNum(num) &&
+                                !board.getParentGrid(cell).hasNum(num)) cell.addNote(num);
                     }
                 }
             }

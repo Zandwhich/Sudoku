@@ -37,25 +37,25 @@ public class Board {
         this.cells = new Cell[this.size * this.size][this.size * this.size];
         for (int x = 0; x < this.cells.length; x++) {
             for (int y = 0; y < this.cells[0].length; y++) {
-                cells[y][x] = new Cell(this.size * this.size, isComputer, new Point(x, y));
+                cells[x][y] = new Cell(this.size * this.size, isComputer, new Point(x, y));
             }
-        }
-
-        // Create the columns from the grid
-        this.columns = new Line[this.size * this.size];
-        for (int i = 0; i < this.size * this.size; i++) {
-            this.columns[i] = new Line(this.cells[i], this.isComputer);
         }
 
         // Create the rows from the grid
         this.rows = new Line[this.size * this.size];
-        Cell[] tempRow;
         for (int i = 0; i < this.size * this.size; i++) {
-            tempRow = new Cell[this.size * this.size];
+            this.rows[i] = new Line(this.cells[i], this.isComputer);
+        }
+
+        // Create the rows from the grid
+        this.columns = new Line[this.size * this.size];
+        Cell[] tempCol;
+        for (int i = 0; i < this.size * this.size; i++) {
+            tempCol = new Cell[this.size * this.size];
             for (int j = 0; j < this.size * this.size; j++) {
-                tempRow[j] = cells[j][i];
+                tempCol[j] = cells[j][i];
             }
-            this.rows[i] = new Line(tempRow, this.isComputer);
+            this.columns[i] = new Line(tempCol, this.isComputer);
         }
 
         // Create the sub-grids from the grid
@@ -95,6 +95,8 @@ public class Board {
     }
 
     public Line getParentRow(Cell cell) {
+//        System.out.println("\n\nGet Parent Row:\n\tCell.x\t" + cell.getX() + "\n\tCell.y:\t" + cell.getY());
+//        this.getRow(cell.getPosition()).print();
         return this.getRow(cell.getPosition());
     }
 
@@ -103,14 +105,18 @@ public class Board {
     }
 
     public Line getParentColumn(Cell cell) {
+//        System.out.println("\n\nGet Parent Column:\n\tCell.x\t" + cell.getX() + "\n\tCell.y:\t" + cell.getY());
+//        this.getColumn(cell.getPosition()).print();
         return this.getColumn(cell.getPosition());
     }
 
     public Grid getGrid(Point position) {
-        return this.grids[position.y/this.size][position.x/this.size];
+        return this.grids[position.x/this.size][position.y/this.size];
     }
 
     public Grid getParentGrid(Cell cell) {
+        System.out.println("\n\nGet Parent Grid:\n\tCell.x\t" + cell.getX() + "\n\tCell.y:\t" + cell.getY());
+        this.getGrid(cell.getPosition()).print();
         return this.getGrid(cell.getPosition());
     }
 
@@ -168,6 +174,16 @@ public class Board {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void printGrids() {
+        for (int i = 0; i < this.size; i++) {
+            for (int j = 0; j < this.size; j++) {
+                System.out.println("Grid[" + i + "][" + j + "]:");
+                this.grids[i][j].print();
+                System.out.println();
+            }
         }
     }
 }

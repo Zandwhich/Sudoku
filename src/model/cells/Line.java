@@ -120,8 +120,12 @@ public class Line extends CellCollection {
         this.line[0].getNote(num);
 
         for (Cell cell: this.line) {
-            if (cell.isFilled() && cell.getNum() == num) return true;
+            if (cell.isFilled() && cell.getNum() == num) {
+                System.out.println("true");
+                return true;
+            }
         }
+        System.out.println("false");
         return false;
     }
 
@@ -139,5 +143,13 @@ public class Line extends CellCollection {
             else if (cell.getNote(num) && temp != null) return null;
         }
         return temp;
+    }
+
+    public void print() {
+        for (Cell cell : this.line) {
+            if (!cell.isFilled()) System.out.print("[ ]");
+            else System.out.print("[" + cell.getNum() + "]");
+        }
+        System.out.println();
     }
 }

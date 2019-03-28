@@ -152,4 +152,15 @@ public class Grid extends CellCollection {
         }
         return temp;
     }
+
+    public void print() {
+        for (Cell[] cells : this.grid) {
+            for (Cell cell : cells) {
+                if (!cell.isFilled()) System.out.print("[ ]");
+                else System.out.print("[" + cell.getNum() + "]");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
 }

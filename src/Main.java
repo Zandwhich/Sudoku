@@ -52,12 +52,13 @@ public class Main {
         }
         board.print();
         System.out.println();
+        board.printGrids();
 
         Machine machine = new Machine(controller, board);
         machine.runAI();
         board.print();
 
-        new Window(new Controller());
+        //new Window(new Controller());
     }
 
 }//end Main
